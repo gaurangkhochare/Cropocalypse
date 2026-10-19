@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cropocalypse — Perfectly Imperfect Photo Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ticker">✨ CROPocalypse™ — Your perfect profile picture is only 47 tiny adjustments away ✨</div>
+
+  <header>
+    <div>
+      <p class="eyebrow">THE WORLD'S MOST NEEDLESSLY COMPLICATED EDITOR</p>
+      <h1>Crop<span>ocalypse</span></h1>
+      <p class="subtitle">A delightfully inconvenient profile-picture experience.</p>
+    </div>
+    <div class="progress-card">
+      <span class="progress-label">PERFECTION METER</span>
+      <div class="meter"><div id="meterFill"></div></div>
+      <span id="meterText">12% — emotionally ready</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel upload-panel">
+      <div class="section-title">
+        <span class="step">01</span>
+        <div>
+          <h2>Import your masterpiece</h2>
+          <p>Portraits welcome. Patience required.</p>
+        </div>
+      </div>
+      <label class="upload-drop" for="imageInput">
+        <span class="upload-icon">⇧</span>
+        <strong>Choose a portrait image</strong>
+        <span>PNG, JPG, WEBP · Your image stays in this browser</span>
+        <input id="imageInput" type="file" accept="image/*" />
+      </label>
+      <div class="file-line"><span id="fileName">No image selected yet</span><span id="imageDimensions">Waiting for a masterpiece…</span></div>
+      <div class="tip-box"><b>Helpful tip #1:</b> The image is probably fine. The interface is the challenge.</div>
+    </section>
+
+    <section class="workspace">
+      <section class="panel editor-panel">
+        <div class="section-title">
+          <span class="step">02</span>
+          <div>
+            <h2>Precisely imprecise editor</h2>
+            <p>Target output: a perfectly square 1:1 image.</p>
+          </div>
+        </div>
+
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="editorCanvas" width="600" height="600" aria-label="Image cropping workspace"></canvas>
+          <div class="empty-state" id="emptyState"><span>▧</span><strong>Your image will appear here</strong><small>Upload first. We can't crop imagination (yet).</small></div>
+          <div class="canvas-badge">LIVE CROP PREVIEW</div>
+        </div>
+
+        <div class="crop-stats">
+          <span id="ratioStatus">Crop ratio: waiting</span>
+          <span id="positionStatus">Position: 50%, 50%</span>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-card">
+            <label for="zoomRange">Zoom level <span id="zoomValue">1.00×</span></label>
+            <input id="zoomRange" type="range" min="1" max="2.5" step="0.05" value="1.00" />
+            <small>Slider direction may feel… philosophically reversed.</small>
+          </div>
+          <div class="control-card">
+            <label for="rotateRange">Rotation <span id="rotateValue">0°</span></label>
+            <input id="rotateRange" type="range" min="-45" max="45" step="5" value="0" />
+            <small>Five-degree increments. Because why not?</small>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-soft" id="centerBtn" type="button">Re-center image</button>
+          <button class="btn btn-soft" id="resetBtn" type="button">Reset everything</button>
+          <button class="btn btn-primary" id="reviewBtn" type="button" disabled>Review crop →</button>
+        </div>
+
+        <p class="microcopy" id="nudge">System note: a square is a rectangle with excellent PR.</p>
+      </section>
+
+      <aside class="side-column">
+        <section class="panel guide-panel">
+          <div class="section-title compact">
+            <span class="step">?</span>
+            <div><h2>Extremely clear guide</h2><p>Probably.</p></div>
+          </div>
+          <ol class="guide-list">
+            <li><span>1</span> Upload your portrait.</li>
+            <li><span>2</span> Drag inside the image to reposition it.</li>
+            <li><span>3</span> Use zoom and rotation to achieve square perfection.</li>
+            <li><span>4</span> Review, confirm, and save the actual square image.</li>
+          </ol>
+          <button class="btn btn-ghost" id="hintBtn" type="button">Reveal a hint (maybe)</button>
+          <p class="hint-text" id="hintText" hidden>Try centering the important part of the image. The crop is always square, even when the preview tries to distract you.</p>
+        </section>
+
+        <section class="panel status-panel">
+          <div class="section-title compact">
+            <span class="step">!</span>
+            <div><h2>Unnecessarily urgent status</h2><p>Everything is probably under control.</p></div>
+          </div>
+          <div class="status-pill" id="statusPill">● Awaiting upload</div>
+          <p id="statusMessage">Your future profile picture is waiting for its character development arc.</p>
+          <div class="fake-notice"><span>ⓘ</span><div><b>Important-ish notice</b><p id="noticeText">Please remain calm. The crop box is a known overthinker.</p></div></div>
+        </section>
+
+        <section class="panel tools-panel">
+          <div class="section-title compact">
+            <span class="step">03</span>
+            <div><h2>Advanced settings</h2><p>For advanced overthinkers.</p></div>
+          </div>
+          <label class="toggle-line"><span>Mirror preview</span><input id="mirrorToggle" type="checkbox" /><i></i></label>
+          <label class="toggle-line"><span>Show alignment grid</span><input id="gridToggle" type="checkbox" checked /><i></i></label>
+          <label class="toggle-line"><span>Extra confusing labels</span><input id="confuseToggle" type="checkbox" checked /><i></i></label>
+          <div class="chaos-row">
+            <label for="chaosMode">Chaos mode</label>
+            <select id="chaosMode">
+              <option value="mild">Mildly Annoying</option>
+              <option value="medium">Unnecessarily Complicated</option>
+              <option value="max">Maximum Reasonable Chaos</option>
+            </select>
+          </div>
+          <button class="btn btn-ghost small" id="normalModeBtn" type="button">Return to normal</button>
+        </section>
+
+        <section class="panel dashboard-panel">
+          <div class="section-title compact">
+            <span class="step">⚑</span>
+            <div><h2>Fake technical dashboard</h2><p>Completely fictional, charmingly useless.</p></div>
+          </div>
+          <div class="dashboard-list">
+            <div class="metric"><span>PIXEL CONFIDENCE</span><strong id="pixelConfidence">72%</strong></div>
+            <div class="metric"><span>SQUARE ENERGY</span><strong id="squareEnergy">HIGH</strong></div>
+            <div class="metric"><span>CROP STABILITY</span><strong id="cropStability">QUESTIONABLE</strong></div>
+            <div class="metric"><span>COMMITTEE APPROVAL</span><strong id="committeeApproval">2/5</strong></div>
+            <div class="metric"><span>PERFECTION DETECTED</span><strong id="perfectionDetected">MAYBE</strong></div>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="panel result-panel" id="resultPanel" hidden>
+      <div class="section-title">
+        <span class="step">04</span>
+        <div><h2>Final approval committee</h2><p>Three clicks from freedom. Allegedly.</p></div>
+      </div>
+      <div class="result-layout">
+        <div class="result-preview"><canvas id="resultCanvas" width="512" height="512"></canvas></div>
+        <div class="result-info">
+          <div class="status-pill success">✓ Crop generated successfully</div>
+          <h3>Your square-ish masterpiece is ready.</h3>
+          <p>The exported file is genuinely square (1:1). No fake success states. We have standards, somewhere.</p>
+          <div class="button-row result-buttons">
+            <button class="btn btn-primary" id="backBtn" type="button">Back to editing</button>
+            <button class="btn btn-soft" id="saveBtn" type="button">Approve & download</button>
+          </div>
+          <p class="microcopy" id="approvalNote">Review it carefully. Or dramatically. Your choice.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Cropocalypse™</span>
+    <span>Made with 100% browser-based chaos · No upload to a server</span>
+    <button id="footerHelp" type="button">I need help</button>
+  </footer>
+
+  <div class="modal-backdrop" id="pixelModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pixelTitle">
+      <button class="modal-close" id="pixelClose" aria-label="Close pixel warning">×</button>
+      <div class="modal-icon">◈</div>
+      <p class="eyebrow">CROPocalypse NOTICE</p>
+      <h2 id="pixelTitle">⚠️ PIXEL CONFUSION DETECTED!</h2>
+      <p>Your image contains an unusual number of pixels. Our highly unqualified Pixel Department recommends immediate reconsideration.</p>
+      <div class="modal-stats">
+        <div><span>Pixel Status</span><strong>Suspiciously Pixelated</strong></div>
+        <div><span>Square Confidence</span><strong>Questionable</strong></div>
+        <div><span>Actual Danger</span><strong>Absolutely None</strong></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-soft" id="fixPixelsBtn" type="button">🛠️ Fix Pixels</button>
+        <button class="btn btn-primary" id="ignorePixelsBtn" type="button">🙈 Ignore Pixels</button>
+      </div>
+      <small class="modal-footnote">This is a fictional Cropocalypse notification, not a real system warning.</small>
+    </div>
+  </div>
+
+  <div class="modal-backdrop captcha-backdrop" id="captchaModal" hidden>
+    <section class="captcha-card" role="dialog" aria-modal="true" aria-labelledby="captchaTitle" aria-describedby="captchaDescription">
+      <button class="modal-close" id="captchaClose" type="button" aria-label="Close fake CAPTCHA">×</button>
+      <p class="eyebrow">CROPVERTISEMENT SECURITY</p>
+      <h2 id="captchaTitle">One tiny human check</h2>
+      <p id="captchaDescription">The committee needs to know you are not three raccoons in a trench coat operating a crop tool.</p>
+      <div class="captcha-challenge" aria-hidden="true">
+        <span>□</span><span>◩</span><span>□</span>
+        <span>◩</span><span>□</span><span>◩</span>
+        <span>□</span><span>◩</span><span>□</span>
+      </div>
+      <label class="captcha-check">
+        <input id="captchaCheckbox" type="checkbox" />
+        <span>I am not a crop robot</span>
+      </label>
+      <div class="captcha-actions">
+        <button class="btn btn-soft" id="captchaCancel" type="button">Back to editing</button>
+        <button class="btn btn-primary" id="captchaVerify" type="button" disabled>Verify my humanity</button>
+      </div>
+      <p class="captcha-countdown" id="captchaCountdown" role="status" aria-live="polite" hidden></p>
+      <small class="modal-footnote">A completely fictional Cropocalypse checkpoint. No actual verification happens.</small>
+    </section>
+  </div>
+
+  <div class="modal-backdrop approval-backdrop" id="approvalModal" hidden>
+    <div class="approval-modal" role="dialog" aria-modal="true" aria-labelledby="approvalStageTitle">
+      <div class="approval-header">
+        <div>
+          <p class="eyebrow">FIVE-STAGE APPROVAL COMMITTEE</p>
+          <h2 id="approvalStageTitle">Review Crop</h2>
+        </div>
+        <button class="modal-close" id="approvalClose" aria-label="Close approval flow">×</button>
+      </div>
+      <div class="approval-progress">
+        <div class="approval-progress-bar"><span id="approvalProgressFill"></span></div>
+        <small id="approvalStepLabel">Stage 1 of 5</small>
+      </div>
+      <p id="approvalStageCopy">This is your first chance to admire the crop without panic.</p>
+      <div class="approval-actions">
+        <button class="btn btn-primary" id="approvalBack" type="button">Back</button>
+        <button class="btn btn-soft" id="approvalNext" type="button">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="assistant-panel" id="assistantPanel" aria-live="polite">
+    <div class="assistant-header">
+      <div class="assistant-name"><span class="assistant-dot"></span> CropGPT</div>
+      <div class="assistant-actions">
+        <button id="assistantMinimize" type="button" aria-label="Minimize CropGPT">—</button>
+        <button id="assistantClose" type="button" aria-label="Close CropGPT">×</button>
+      </div>
+    </div>
+    <div class="assistant-body" id="assistantBody">
+      <div class="assistant-message"><strong>CropGPT:</strong> Your image contains a promising number of pixels.</div>
+    </div>
+  </aside>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
